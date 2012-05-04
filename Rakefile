@@ -1,4 +1,4 @@
-# Rake file to help with Vistazo development
+# Rake file to help with development
 require 'fileutils'
 
 #####################################################################
@@ -53,12 +53,12 @@ namespace "deploy" do
     sh deploy_cmd
   end
 
-  desc "Deploy staging branch to http://pebblecode-staging.herokuapp.com/"
+  desc "Deploy staging branch"
   task :staging do
     Rake::Task["deploy:branch"].invoke("staging")
   end
 
-  desc "Deploy production branch to http://pebblecode.com/"
+  desc "Deploy production branch"
   task :production do
     Rake::Task["deploy:branch"].invoke("production")
   end
@@ -74,7 +74,7 @@ namespace "shipit" do
     Rake::Task["deploy:branch"].invoke(args.branch)
   end
 
-  desc "Merge and push production branch to github, then deploy to http://pebblecode.com/"
+  desc "Merge and push production branch to github, then deploy."
   task :production do
     Rake::Task["shipit:branch"].invoke("production")
   end
