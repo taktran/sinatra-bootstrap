@@ -1,0 +1,37 @@
+!!!
+%html{:lang => "en"}
+  %head
+    %meta{:charset => "utf-8"}
+      %title= "App"
+      / %link{:rel => "shortcut icon", :type => "image/x-icon", :href => ""}/
+
+      %link{:href => "/css/style.css", :rel => "stylesheet", :type => "text/css"}/
+
+      %script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js", :type => "text/javascript"}
+      %script{:src => "/js/lib/underscore-min.js", :type => "text/javascript"}
+      %script{:src => "/js/lib/backbone-min.js", :type => "text/javascript"}
+
+      %script{:type => "text/javascript"}
+        :plain
+          var $buoop = {vs:{i:6,f:3.5,o:10.6,s:3.2,n:9}}
+          $buoop.ol = window.onload;
+          window.onload=function(){
+           try {if ($buoop.ol) $buoop.ol();}catch (e) {}
+           var e = document.createElement("script");
+           e.setAttribute("type", "text/javascript");
+           e.setAttribute("src", "http://browser-update.org/update.js");
+           document.body.appendChild(e);
+          }
+
+      %meta{:content => "width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;", :name => "viewport"}/
+  %body{:class => "page-#{@page_name}"}
+    %header
+      %nav
+        %a.logo{:href => "/"}
+
+    #wrap
+      = yield
+      #wrap-footer
+    %footer
+
+    %script{:src => "/js/script.js", :type => "text/javascript"}
