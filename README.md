@@ -9,7 +9,6 @@ To set up
     gem install bundler
     bundle install
 
-To run (using the development procfile)
+To run
 
     rake server
-    # open http://localhost:4000/
