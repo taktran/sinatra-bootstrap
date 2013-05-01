@@ -1,1 +1,0 @@
-web: bundle exec shotgun --server=thin config.ru -p 4000
