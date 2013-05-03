@@ -15,7 +15,6 @@ task "server", [:port, :use_local_ip_address] do |t, args|
 
   puts "Start server: http://#{host}:#{port}/"
   start_server_cmd = "bundle exec shotgun --server=thin --host=#{host} config.ru -p #{port}"
-  start_server_cmd += " & grunt"
 
   sh start_server_cmd
 end
