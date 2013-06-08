@@ -1,6 +1,6 @@
 # App
 
-A description
+A sinatra bootstrap application. Build things.
 
 ## Development
 
