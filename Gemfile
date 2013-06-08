@@ -16,10 +16,13 @@ gem 'heroku'
 # For running on production
 gem 'rspec'
 
+group :development do
+  gem 'debugger'
+end
+
 group :development, :test do
   # Servers
   gem 'shotgun'
-  gem 'ruby-debug19', :require => 'ruby-debug'
 
   # Testing
   gem 'guard'
