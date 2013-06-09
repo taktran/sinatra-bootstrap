@@ -6,5 +6,5 @@ Encoding.default_internal = Encoding::UTF_8
 $stdout.sync = true
 
 root = ::File.dirname(__FILE__)
-require ::File.join( root, 'app' )
+require ::File.join(root, 'app/app' )
 run App.new

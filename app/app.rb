@@ -5,16 +5,19 @@ require 'sinatra/flash'
 require 'sass'
 require 'haml'
 
-# Require all in lib directory
-Dir[File.dirname(__FILE__) + '/lib/*.rb'].each {|file| require file }
-
 class App < Sinatra::Application
+  set :root, settings.root + "/.."
 
   # Load config.yml into settings.config variable
-  set :config, YAML.load_file("#{root}/config/config.yml")[settings.environment.to_s]
+  set :config, YAML.load_file("#{settings.root}/config/config.yml")[settings.environment.to_s]
 
   set :environment, ENV["RACK_ENV"] || "development"
+  set :public_folder, "app/public"
+  set :views, "app/views"
   set :haml, { :format => :html5 }
+
+  # Load library files
+  Dir[settings.root + '/lib/*.rb'].each {|file| require file }
 
   ######################################################################
   # Configurations for different environments
@@ -39,8 +42,10 @@ helpers do
   # More methods in /helpers/*
 end
 
-require_relative 'models/init'
-require_relative 'helpers/init'
+# Auto load app sub folder
+Dir[settings.root + '/app/helpers/*.rb', settings.root + '/app/models/*.rb'].each do |path|
+  path.each {|file| require file }
+end
 
 ########################################################################
 # Routes/Controllers
@@ -60,8 +65,6 @@ get '/css/style.css' do
 end
 
 get '/' do
-  protect_with_http_auth!
-
   @page_name = "home"
   haml :index, :layout => :'layouts/application'
 end
