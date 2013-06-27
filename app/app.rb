@@ -33,25 +33,24 @@ class App < Sinatra::Base
 
   ######################################################################
 
+  # Helpers
+  Dir[settings.root + '/app/helpers/*.rb'].each { |path| require path }
+
   helpers do
     include Rack::Utils
     alias_method :h, :escape_html
 
-    # More methods in /helpers/*
+    include Sinatra::HttpAuthentication
   end
 
   # Auto load app sub folder
-  Dir[settings.root + '/app/helpers/*.rb', settings.root + '/app/models/*.rb'].each do |path|
+  Dir[settings.root + '/app/models/*.rb'].each do |path|
     require path
   end
 
   ########################################################################
   # Routes/Controllers
   ########################################################################
-
-  def protect_with_http_auth!
-    protected!(settings.config["http_auth_username"], settings.config["http_auth_password"])
-  end
 
   # ----------------------------------------------------------------------
   # Main
@@ -63,6 +62,8 @@ class App < Sinatra::Base
   end
 
   get '/' do
+    protect_with_http_auth!
+
     @page_name = "home"
     haml :index, :layout => :'layouts/application'
   end

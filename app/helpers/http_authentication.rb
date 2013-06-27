@@ -14,6 +14,10 @@ module Sinatra
       @auth ||=  Rack::Auth::Basic::Request.new(request.env)
       @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == [username, password]
     end
+
+    def protect_with_http_auth!
+      protected!(settings.config["http_auth_username"], settings.config["http_auth_password"])
+    end
   end
 
   helpers HttpAuthentication
