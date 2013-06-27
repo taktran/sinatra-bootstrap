@@ -10,9 +10,6 @@ gem 'rack'
 gem 'sass'
 gem 'haml'
 
-# For production deployment
-gem 'heroku'
-
 # For running on production
 gem 'rspec'
 
