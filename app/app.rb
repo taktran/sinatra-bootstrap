@@ -1,11 +1,11 @@
 # encoding utf-8
 
-require 'sinatra'
+require 'sinatra/base'
 require 'sinatra/flash'
 require 'sass'
 require 'haml'
 
-class App < Sinatra::Application
+class App < Sinatra::Base
   set :root, settings.root + "/.."
 
   # Load config.yml into settings.config variable
@@ -33,54 +33,54 @@ class App < Sinatra::Application
 
   ######################################################################
 
-end
+  helpers do
+    include Rack::Utils
+    alias_method :h, :escape_html
 
-helpers do
-  include Rack::Utils
-  alias_method :h, :escape_html
+    # More methods in /helpers/*
+  end
 
-  # More methods in /helpers/*
-end
+  # Auto load app sub folder
+  Dir[settings.root + '/app/helpers/*.rb', settings.root + '/app/models/*.rb'].each do |path|
+    require path
+  end
 
-# Auto load app sub folder
-Dir[settings.root + '/app/helpers/*.rb', settings.root + '/app/models/*.rb'].each do |path|
-  path.each {|file| require file }
-end
+  ########################################################################
+  # Routes/Controllers
+  ########################################################################
 
-########################################################################
-# Routes/Controllers
-########################################################################
+  def protect_with_http_auth!
+    protected!(settings.config["http_auth_username"], settings.config["http_auth_password"])
+  end
 
-def protect_with_http_auth!
-  protected!(settings.config["http_auth_username"], settings.config["http_auth_password"])
-end
+  # ----------------------------------------------------------------------
+  # Main
+  # ----------------------------------------------------------------------
 
-# ----------------------------------------------------------------------
-# Main
-# ----------------------------------------------------------------------
+  get '/css/style.css' do
+    content_type 'text/css', :charset => 'utf-8'
+    scss :'sass/style'
+  end
 
-get '/css/style.css' do
-  content_type 'text/css', :charset => 'utf-8'
-  scss :'sass/style'
-end
-
-get '/' do
-  @page_name = "home"
-  haml :index, :layout => :'layouts/application'
-end
+  get '/' do
+    @page_name = "home"
+    haml :index, :layout => :'layouts/application'
+  end
 
 
-# -----------------------------------------------------------------------
-# Error handling
-# -----------------------------------------------------------------------
+  # -----------------------------------------------------------------------
+  # Error handling
+  # -----------------------------------------------------------------------
 
-not_found do
-  logger.info "not_found: #{request.request_method} #{request.url}"
-end
+  not_found do
+    logger.info "not_found: #{request.request_method} #{request.url}"
+  end
 
-# All errors
-error do
-  @page_name = "error"
-  @is_error = true
-  haml :error, :layout => :'layouts/application'
+  # All errors
+  error do
+    @page_name = "error"
+    @is_error = true
+    haml :error, :layout => :'layouts/application'
+  end
+
 end
