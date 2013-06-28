@@ -4,6 +4,7 @@ require 'sinatra/base'
 require 'sinatra/flash'
 require 'sass'
 require 'haml'
+require 'yaml'
 
 class App < Sinatra::Base
   set :root, settings.root + "/.."
