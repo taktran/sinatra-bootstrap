@@ -63,7 +63,7 @@ class App < Sinatra::Base
   end
 
   get '/' do
-    protect_with_http_auth!
+    # protect_with_http_auth!
 
     @page_name = "home"
     haml :index, :layout => :'layouts/application'
